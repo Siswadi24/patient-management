@@ -49,3 +49,4 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'verified', 'role:user
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
+require __DIR__ . '/auth.php';
