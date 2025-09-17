@@ -266,12 +266,16 @@ const onRowsChange = (event: any) => {
         preserveScroll: false,
     });
 };
+
+// Translate gender to Indonesian
+const translateGender = (gender: string) => {
+    return gender === 'male' ? 'Laki-laki' : 'Perempuan';
+};
 </script>
 
 <template>
     <div>
-
-        <Head title="Patient Records" />
+        <Head title="Data Pasien" />
 
         <AppLayout :breadcrumbs="breadcrumbs">
             <!-- Patient Details Modal Component -->
@@ -284,22 +288,37 @@ const onRowsChange = (event: any) => {
                 v-model:selectedJob="selectedJob" @apply-filters="applyFilters" @clear-filters="clearFilters" />
 
             <div class="card rounded-xl border border-gray-700 bg-gray-800 px-3 py-3 shadow">
-                <div class="mb-4 flex flex-col gap-2 rounded-t-lg bg-gray-800 p-4 md:flex-row md:justify-between">
-                    <div>
-                        <Button label="Add Patient"
-                            class="w-full border-blue-600 bg-blue-600 text-white hover:bg-blue-700 md:w-auto" />
+                <div class="mb-4 flex flex-col gap-4 rounded-t-lg bg-gray-800 p-4 md:flex-row md:justify-between md:items-center">
+                    <!-- Add Patient Button -->
+                    <div class="w-full md:w-auto">
+                        <Button 
+                            label="Tambah Pasien"
+                            class="w-full border-blue-600 bg-blue-600 text-white hover:bg-blue-700 md:w-auto" 
+                        />
                     </div>
-                    <div class="flex gap-2 w-full md:w-auto">
-                        <IconField class="flex-1 sm:w-64">
+                    
+                    <!-- Search and Filter Section -->
+                    <div class="flex flex-col gap-3 w-full md:flex-row md:gap-2 md:w-auto md:items-center">
+                        <!-- Search Input - Full width on mobile, larger on desktop -->
+                        <IconField class="w-full md:w-96">
                             <InputIcon>
                                 <i class="pi pi-search text-gray-400" />
                             </InputIcon>
-                            <InputText v-model="searchQuery" placeholder="Keyword Search"
-                                class="w-full border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400 focus:border-blue-500" />
+                            <InputText 
+                                v-model="searchQuery" 
+                                placeholder="Cari kata kunci..."
+                                class="w-full border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400 focus:border-blue-500" 
+                            />
                         </IconField>
-                        <Button @click="showFilterModal = true" icon severity="secondary"
-                            class="border-gray-600 bg-gray-600 text-white hover:bg-gray-700">
-                            <Filter class="h-4 w-4" />
+
+                        <!-- Filter Button - Full width on mobile, compact on desktop -->
+                        <Button
+                            @click="showFilterModal = true"
+                            class="w-full md:w-auto border-gray-600 bg-gray-600 text-white hover:bg-gray-700 justify-center md:justify-start"
+                            severity="secondary"
+                        >
+                            <Filter class="h-4 w-4 md:mr-0" />
+                            <span class="ml-2 md:hidden">Filter</span>
                         </Button>
                     </div>
                 </div>
@@ -332,7 +351,7 @@ const onRowsChange = (event: any) => {
                                                 class="justify-start border-blue-600 bg-blue-600 py-2 text-sm text-white hover:bg-blue-700"
                                                 size="small">
                                                 <Eye class="mr-2 h-4 w-4" />
-                                                Show
+                                                Lihat
                                             </Button>
 
                                             <Button @click="handleAction('edit', patient)" severity="warning"
@@ -346,7 +365,7 @@ const onRowsChange = (event: any) => {
                                                 class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700"
                                                 size="small">
                                                 <Trash class="mr-2 h-4 w-4" />
-                                                Delete
+                                                Hapus
                                             </Button>
                                         </div>
                                     </Popover>
@@ -355,32 +374,30 @@ const onRowsChange = (event: any) => {
 
                             <div class="grid grid-cols-2 gap-4 mb-3">
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Gender</p>
-                                    <span
-                                        :class="`inline-block px-2 py-1 text-xs rounded-full text-white ${getGenderBadge(patient.gender)}`">
-                                        {{ patient.gender === 'male' ? 'Male' : 'Female' }}
+                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Jenis Kelamin</p>
+                                    <span :class="`inline-block px-2 py-1 text-xs rounded-full text-white ${getGenderBadge(patient.gender)}`">
+                                        {{ translateGender(patient.gender) }}
                                     </span>
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Age</p>
-                                    <p class="text-gray-100 font-semibold">{{ calculateAge(patient.birth_date) }} years
-                                    </p>
+                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Umur</p>
+                                    <p class="text-gray-100 font-semibold">{{ calculateAge(patient.birth_date) }} tahun</p>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4 mb-3">
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Phone</p>
+                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Telepon</p>
                                     <p class="text-gray-100">{{ patient.phone_number }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">City</p>
+                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Kota</p>
                                     <p class="text-gray-100">{{ patient.city_address }}</p>
                                 </div>
                             </div>
 
                             <div v-if="patient.blood_type" class="mb-3">
-                                <p class="text-gray-400 text-xs uppercase tracking-wide">Blood Type</p>
+                                <p class="text-gray-400 text-xs uppercase tracking-wide">Golongan Darah</p>
                                 <p class="text-gray-100 text-sm">{{ patient.blood_type }}</p>
                             </div>
                         </div>
@@ -390,26 +407,35 @@ const onRowsChange = (event: any) => {
                     <div class="mt-6 flex justify-center">
                         <Button v-if="currentPage > 1" @click="currentPage--"
                             class="mr-2 bg-gray-600 hover:bg-gray-700 text-white border-gray-600" size="small">
-                            Previous
+                            Sebelumnya
                         </Button>
                         <span class="flex items-center px-4 text-gray-300">
-                            Page {{ currentPage }} of {{ totalPages }}
+                            Halaman {{ currentPage }} dari {{ totalPages }}
                         </span>
                         <Button v-if="currentPage < totalPages" @click="currentPage++"
                             class="ml-2 bg-gray-600 hover:bg-gray-700 text-white border-gray-600" size="small">
-                            Next
+                            Selanjutnya
                         </Button>
                     </div>
                 </div>
 
                 <!-- Desktop Table View with Server-side Pagination -->
                 <div class="hidden md:block">
-                    <DataTable :value="props.patients" :filters="filters"
+                    <DataTable
+                        :value="props.patients"
+                        :filters="filters"
                         :globalFilterFields="['first_name', 'last_name', 'rm_number', 'phone_number', 'city_address', 'blood_type']"
-                        lazy paginator :rows="serverPerPage" :rowsPerPageOptions="[15, 30, 50, 100]"
-                        :totalRecords="pagination?.total || 0" :first="((serverCurrentPage - 1) * serverPerPage)"
-                        @page="onPageChange" @rows-per-page-change="onRowsChange" tableStyle="min-width: 50rem"
-                        class="dark-table">
+                        lazy
+                        paginator
+                        :rows="serverPerPage"
+                        :rowsPerPageOptions="[15, 30, 50, 100]"
+                        :totalRecords="pagination?.total || 0"
+                        :first="((serverCurrentPage - 1) * serverPerPage)"
+                        @page="onPageChange"
+                        @rows-per-page-change="onRowsChange"
+                        tableStyle="min-width: 50rem"
+                        class="dark-table"
+                    >
                         <!-- Index Column -->
                         <Column field="index" header="#" style="width: 4%">
                             <template #body="{ index }">
@@ -426,52 +452,51 @@ const onRowsChange = (event: any) => {
                             </template>
                         </Column>
 
-                        <Column field="rm_number" header="RM Number" sortable style="width: 12%">
+                        <Column field="rm_number" header="No. RM" sortable style="width: 12%">
                             <template #body="{ data }">
                                 <span class="text-gray-100 font-mono">{{ data.rm_number }}</span>
                             </template>
                         </Column>
 
-                        <Column field="first_name" header="Patient Name" sortable style="width: 20%">
+                        <Column field="first_name" header="Nama Pasien" sortable style="width: 20%">
                             <template #body="{ data }">
                                 <span class="text-gray-100">{{ data.first_name }} {{ data.last_name }}</span>
                             </template>
                         </Column>
 
-                        <Column field="gender" header="Gender" sortable style="width: 10%">
+                        <Column field="gender" header="Jenis Kelamin" sortable style="width: 10%">
                             <template #body="{ data }">
-                                <span
-                                    :class="`inline-block px-2 py-1 text-xs rounded-full text-white ${getGenderBadge(data.gender)}`">
-                                    {{ data.gender === 'male' ? 'Male' : 'Female' }}
+                                <span :class="`inline-block px-2 py-1 text-xs rounded-full text-white ${getGenderBadge(data.gender)}`">
+                                    {{ translateGender(data.gender) }}
                                 </span>
                             </template>
                         </Column>
 
-                        <Column field="birth_date" header="Age" sortable style="width: 8%">
+                        <Column field="birth_date" header="Umur" sortable style="width: 8%">
                             <template #body="{ data }">
-                                <span class="text-gray-100">{{ calculateAge(data.birth_date) }} years</span>
+                                <span class="text-gray-100">{{ calculateAge(data.birth_date) }} tahun</span>
                             </template>
                         </Column>
 
-                        <Column field="phone_number" header="Phone" style="width: 15%">
+                        <Column field="phone_number" header="Telepon" style="width: 15%">
                             <template #body="{ data }">
                                 <span class="text-gray-100">{{ data.phone_number }}</span>
                             </template>
                         </Column>
 
-                        <Column field="city_address" header="City" style="width: 12%">
+                        <Column field="city_address" header="Kota" style="width: 12%">
                             <template #body="{ data }">
                                 <span class="text-gray-100">{{ data.city_address }}</span>
                             </template>
                         </Column>
 
-                        <Column field="blood_type" header="Blood Type" style="width: 8%">
+                        <Column field="blood_type" header="Gol. Darah" style="width: 8%">
                             <template #body="{ data }">
                                 <span class="text-gray-100">{{ data.blood_type || '-' }}</span>
                             </template>
                         </Column>
 
-                        <Column field="actions" header="Actions" style="width: 7%">
+                        <Column field="actions" header="Aksi" style="width: 7%">
                             <template #body="{ data }">
                                 <div class="flex justify-center">
                                     <Button @click="togglePopover($event, data.id)" icon severity="secondary"
@@ -485,7 +510,7 @@ const onRowsChange = (event: any) => {
                                                 class="justify-start border-blue-600 bg-blue-600 py-2 text-sm text-white hover:bg-blue-700"
                                                 size="small">
                                                 <Eye class="mr-2 h-4 w-4" />
-                                                Show
+                                                Lihat
                                             </Button>
                                             <Button @click="handleAction('edit', data)" severity="warning"
                                                 class="justify-start border-yellow-600 bg-yellow-600 py-2 text-sm text-white hover:bg-yellow-700"
@@ -497,7 +522,7 @@ const onRowsChange = (event: any) => {
                                                 class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700"
                                                 size="small">
                                                 <Trash class="mr-2 h-4 w-4" />
-                                                Delete
+                                                Hapus
                                             </Button>
                                         </div>
                                     </Popover>

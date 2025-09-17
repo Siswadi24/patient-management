@@ -35,14 +35,18 @@ const calculateAge = (birthDate: string) => {
 const getGenderBadge = (gender: string) => {
     return gender === 'male' ? 'bg-blue-600' : 'bg-pink-600';
 };
+
+const translateGender = (gender: string) => {
+    return gender === 'male' ? 'Laki-laki' : 'Perempuan';
+};
 </script>
 
 <template>
     <Dialog
         v-model:visible="dialogVisible"
         modal
-        header="Patient Details"
-        :style="{ width: '50rem' }"
+        header="Detail Pasien"
+        :style="{ width: '60rem' }"
         class="dark"
     >
         <div v-if="patient" class="space-y-6">
@@ -54,108 +58,128 @@ const getGenderBadge = (gender: string) => {
                     class="h-20 w-20 rounded-full object-cover border-2 border-gray-500"
                 />
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-100">
+                    <h2 class="text-2xl font-bold ">
                         {{ patient.first_name }} {{ patient.last_name }}
                     </h2>
-                    <p class="text-gray-400">RM: {{ patient.rm_number }}</p>
+                    <p class="text-gray-500">No. RM: {{ patient.rm_number }}</p>
                     <span :class="`inline-block px-3 py-1 text-sm rounded-full text-white ${getGenderBadge(patient.gender)}`">
-                        {{ patient.gender === 'male' ? 'Male' : 'Female' }}
+                        {{ translateGender(patient.gender) }}
                     </span>
                 </div>
             </div>
 
             <!-- Patient Information Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Personal Information -->
+                <!-- Informasi Pribadi -->
                 <div class="space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-100 border-b border-gray-600 pb-2">Personal Information</h3>
+                    <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Informasi Pribadi</h3>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Age</label>
-                        <p class="text-gray-100 font-medium">{{ calculateAge(patient.birth_date) }} years old</p>
+                        <label class="text-sm uppercase tracking-wide">Umur</label>
+                        <p class=" font-medium">{{ calculateAge(patient.birth_date) }} tahun</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Birth Date & Place</label>
-                        <p class="text-gray-100">{{ formatDate(patient.birth_date) }}</p>
-                        <p class="text-gray-300 text-sm">{{ patient.birth_place }}</p>
+                        <label class="text-sm uppercase tracking-wide">Tanggal & Tempat Lahir</label>
+                        <p class="">{{ formatDate(patient.birth_date) }}</p>
+                        <p class="text-sm">{{ patient.birth_place }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Blood Type</label>
-                        <p class="text-gray-100">{{ patient.blood_type || '-' }}</p>
+                        <label class="text-sm uppercase tracking-wide">Golongan Darah</label>
+                        <p class="">{{ patient.blood_type || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Identity Number</label>
-                        <p class="text-gray-100 font-mono">{{ patient.identity_number }}</p>
+                        <label class="text-sm uppercase tracking-wide">Nomor Identitas (KTP)</label>
+                        <p class=" font-mono">{{ patient.identity_number || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">BPJS Number</label>
-                        <p class="text-gray-100 font-mono">{{ patient.bpjs_number || '-' }}</p>
+                        <label class="text-sm uppercase tracking-wide">Nomor BPJS</label>
+                        <p class=" font-mono">{{ patient.bpjs_number || '-' }}</p>
                     </div>
                 </div>
 
-                <!-- Contact & Address Information -->
+                <!-- Informasi Kontak & Alamat -->
                 <div class="space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-100 border-b border-gray-600 pb-2">Contact & Address</h3>
+                    <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Kontak & Alamat</h3>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Phone Number</label>
-                        <p class="text-gray-100">{{ patient.phone_number }}</p>
+                        <label class="text-sm uppercase tracking-wide">Nomor Telepon</label>
+                        <p class="">{{ patient.phone_number || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Address</label>
-                        <p class="text-gray-100">{{ patient.street_address }}</p>
-                        <p class="text-gray-300 text-sm">{{ patient.city_address }}, {{ patient.state_address }}</p>
+                        <label class="text-sm uppercase tracking-wide">Alamat Lengkap</label>
+                        <p class="">{{ patient.street_address || '-' }}</p>
+                        <p class="text-sm">{{ patient.city_address || '-' }}, {{ patient.state_address || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Emergency Contact</label>
-                        <p class="text-gray-100">{{ patient.emergency_full_name }}</p>
-                        <p class="text-gray-300 text-sm">{{ patient.emergency_phone_number }}</p>
+                        <label class="text-sm uppercase tracking-wide">Kontak Darurat</label>
+                        <p class="">{{ patient.emergency_full_name || '-' }}</p>
+                        <p class="text-sm">{{ patient.emergency_phone_number || '-' }}</p>
                     </div>
                 </div>
 
-                <!-- Family Information -->
+                <!-- Informasi Keluarga -->
                 <div class="space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-100 border-b border-gray-600 pb-2">Family Information</h3>
+                    <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Informasi Keluarga</h3>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Father's Name</label>
-                        <p class="text-gray-100">{{ patient.father_name }}</p>
+                        <label class="text-sm uppercase tracking-wide">Nama Ayah</label>
+                        <p class="">{{ patient.father_name || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Mother's Name</label>
-                        <p class="text-gray-100">{{ patient.mother_name }}</p>
+                        <label class="text-sm uppercase tracking-wide">Nama Ibu</label>
+                        <p class="">{{ patient.mother_name || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Marital Status</label>
-                        <p class="text-gray-100">{{ patient.married_status }}</p>
+                        <label class="text-sm uppercase tracking-wide">Status Pernikahan</label>
+                        <p class="">{{ patient.married_status || '-' }}</p>
                     </div>
                 </div>
 
-                <!-- Other Information -->
+                <!-- Informasi Lainnya -->
                 <div class="space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-100 border-b border-gray-600 pb-2">Other Information</h3>
+                    <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Informasi Lainnya</h3>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Job</label>
-                        <p class="text-gray-100">{{ patient.job }}</p>
+                        <label class="text-sm uppercase tracking-wide">Pekerjaan</label>
+                        <p class="">{{ patient.job || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Education</label>
-                        <p class="text-gray-100">{{ patient.education }}</p>
+                        <label class="text-sm uppercase tracking-wide">Pendidikan</label>
+                        <p class="">{{ patient.education || '-' }}</p>
                     </div>
 
                     <div>
-                        <label class="text-gray-400 text-sm uppercase tracking-wide">Ethnic</label>
-                        <p class="text-gray-100">{{ patient.ethnic }}</p>
+                        <label class="text-sm uppercase tracking-wide">Suku/Etnis</label>
+                        <p class="">{{ patient.ethnic || '-' }}</p>
+                    </div>
+
+                    <div>
+                        <label class="text-sm uppercase tracking-wide">Hambatan Komunikasi</label>
+                        <p class="">{{ patient.communication_barrier || '-' }}</p>
+                    </div>
+
+                    <div>
+                        <label class="text-sm uppercase tracking-wide">Status Disabilitas</label>
+                        <p class="">{{ patient.disability_status || '-' }}</p>
+                    </div>
+
+                    <div>
+                        <label class="text-sm uppercase tracking-wide">Dibuat Pada</label>
+                        <p class="">{{ formatDate(patient.created_at) }}</p>
+                    </div>
+
+                    <div>
+                        <label class="text-sm uppercase tracking-wide">Terakhir Diperbarui</label>
+                        <p class="">{{ formatDate(patient.updated_at) }}</p>
                     </div>
                 </div>
             </div>
