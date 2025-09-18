@@ -604,12 +604,12 @@ function handleSubmit() {
         birth_date: formattedDate
     });
 
-    // Submit form using Inertia.js
+    // Submit form using Inertia.js - let API handle all validation
     form.transform((data) => ({
         ...data,
         birth_date: formattedDate,
         // Ensure optional fields are null if empty (not empty strings)
-        rm_number: data.rm_number?.trim() || null, // Handle RM number
+        rm_number: data.rm_number?.trim() || null,
         bpjs_number: data.bpjs_number?.trim() || null,
         communication_barrier: data.communication_barrier?.trim() || null,
         disability_status: data.disability_status?.trim() || null,
@@ -630,11 +630,11 @@ function handleSubmit() {
         onError: (errors) => {
             console.log('Form submission errors:', errors);
 
-            // Handle server validation errors
+            // Handle API validation errors directly
             if (errors.api) {
                 showErrorAlert({ api: [errors.api] });
             } else {
-                // Display server validation errors
+                // Display API validation errors from the response
                 showErrorAlert(errors);
             }
         },
@@ -647,7 +647,7 @@ function handleSubmit() {
 function onFileSelect(event: any) {
     const file = event.files[0];
     if (file) {
-        // Basic client-side file validation for better UX
+        // Basic client-side validation for better UX
         if (file.size > 2 * 1024 * 1024) {
             showErrorAlert({ avatar: ['Ukuran file maksimal 2MB'] });
             return;
@@ -724,7 +724,3 @@ defineExpose({
     openDialog
 });
 </script>
-
-<style scoped>
-/* Add any component-specific styles here */
-</style>
