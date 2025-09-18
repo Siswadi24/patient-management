@@ -15,6 +15,7 @@ import { computed, ref, watch } from 'vue';
 import FilterModal from './component/filterModal.vue';
 import ShowPatient from './showPatient.vue';
 import TambahPatient from './tambahPatient.vue';
+import EditPatient from './editPatient.vue';
 
 const props = defineProps<{
     patients: any[];
@@ -550,15 +551,7 @@ const translateGender = (gender: string) => {
                                                 <Eye class="mr-2 h-4 w-4" />
                                                 Lihat
                                             </Button>
-                                            <Button
-                                                @click="handleAction('edit', data)"
-                                                severity="warning"
-                                                class="justify-start border-yellow-600 bg-yellow-600 py-2 text-sm text-white hover:bg-yellow-700"
-                                                size="small"
-                                            >
-                                                <Edit class="mr-2 h-4 w-4" />
-                                                Edit
-                                            </Button>
+                                            <EditPatient :patient="data" />
                                             <Button
                                                 @click="handleAction('delete', data)"
                                                 severity="danger"

@@ -166,6 +166,99 @@ class PatientController extends Controller
         }
     }
 
+    public function updatePatient(Request $request, $id)
+    {
+        try {
+            $client = new Client();
+            $avatarUrl = null;
+
+            if ($request->hasFile('avatar')) {
+                $avatarUrl = 'https://api.dicebear.com/6.x/identicon/svg?seed=' . strtolower($request->first_name . '.' . $request->last_name);
+            }
+
+            $apiData = [
+                'rm_number' => $request->rm_number,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'gender' => $request->gender,
+                'birth_place' => $request->birth_place,
+                'birth_date' => $request->birth_date,
+                'phone_number' => $request->phone_number,
+                'street_address' => $request->street_address,
+                'city_address' => $request->city_address,
+                'state_address' => $request->state_address,
+                'emergency_full_name' => $request->emergency_full_name,
+                'emergency_phone_number' => $request->emergency_phone_number,
+                'identity_number' => $request->identity_number,
+                'bpjs_number' => $request->bpjs_number,
+                'ethnic' => json_encode(['name' => $request->ethnic]),
+                'education' => $request->education,
+                'communication_barrier' => $request->communication_barrier,
+                'disability_status' => $request->disability_status,
+                'married_status' => $request->married_status,
+                'father_name' => $request->father_name,
+                'mother_name' => $request->mother_name,
+                'job' => $request->job,
+                'blood_type' => $request->blood_type,
+            ];
+
+            if ($avatarUrl) {
+                $apiData['avatar'] = $avatarUrl;
+            }
+
+            $response = $client->request('PUT', "https://mockapi.pkuwsb.id/api/patient/{$id}", [
+                'headers' => [
+                    'X-username' => 'admin',
+                    'X-password' => 'secret',
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $apiData,
+                'timeout' => 30,
+            ]);
+
+            $responseData = json_decode($response->getBody()->getContents(), true);
+
+            if ($responseData['success'] ?? false) {
+                return redirect()->route('user.patient.records')->with('success', 'Data pasien berhasil diperbarui');
+            } else {
+                $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat memperbarui data';
+                $errors = $responseData['errors'] ?? [];
+
+                if (!empty($errors)) {
+                    return back()->withErrors($errors)->withInput();
+                } else {
+                    return back()->withErrors(['api' => $errorMessage])->withInput();
+                }
+            }
+
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $responseBody = $e->getResponse()->getBody()->getContents();
+                $responseData = json_decode($responseBody, true);
+
+                if ($e->getResponse()->getStatusCode() === 422) {
+                    $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan validasi';
+                    $errors = $responseData['errors'] ?? [];
+
+                    if (!empty($errors)) {
+                        return back()->withErrors($errors)->withInput();
+                    } else {
+                        return back()->withErrors(['api' => $errorMessage])->withInput();
+                    }
+                }
+
+                $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat menghubungi server';
+                return back()->withErrors(['api' => $errorMessage])->withInput();
+            }
+
+            return back()->withErrors(['api' => 'Terjadi kesalahan saat menghubungi server. Silakan coba lagi.'])->withInput();
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['api' => 'Terjadi kesalahan yang tidak terduga. Silakan coba lagi.'])->withInput();
+        }
+    }
+
     private function generateRandomRMNumber(): string
     {
         return str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT);
