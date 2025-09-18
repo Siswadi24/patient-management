@@ -1,10 +1,10 @@
 # Patient Management System - PKU Muhammadiyah Wonosobo
 
-Sistem manajemen pasien yang dibangun menggunakan Laravel 11 dengan Inertia.js dan Vue 3. Aplikasi ini menyediakan interface untuk mengelola data pasien, transaksi finansial, dan sistem profil pengguna.
+Sistem manajemen pasien yang dibangun menggunakan Laravel 12 dengan Inertia.js dan Vue 3. Aplikasi ini menyediakan interface untuk mengelola data pasien, transaksi finansial, dan sistem profil pengguna.
 
 ## 🛠️ Teknologi yang Digunakan
 
-- **Backend**: Laravel 11
+- **Backend**: Laravel 12
 - **Frontend**: Vue 3 + TypeScript
 - **Bridge**: Inertia.js
 - **Database**: MySQL
@@ -16,10 +16,7 @@ Sistem manajemen pasien yang dibangun menggunakan Laravel 11 dengan Inertia.js d
 
 - ✅ Manajemen Data Pasien (CRUD)
 - ✅ Sistem Autentikasi dengan Role-based Access
-- ✅ Manajemen Transaksi Finansial
-- ✅ Kategori Transaksi
 - ✅ Profile Management dengan Upload Photo
-- ✅ Dashboard Analytics
 - ✅ Filter dan Pencarian Advanced
 - ✅ Responsive Design (Mobile & Desktop)
 - ✅ Real-time Alerts dan Notifications
@@ -63,10 +60,14 @@ php artisan key:generate
 
 ### 5. Database Setup
 ```bash
+# Buat database MySQL
+# mysql -u root -p
+# CREATE DATABASE pku_patient_management;
+
 # Jalankan migrasi database
 php artisan migrate
 
-# (Opsional) Seed data awal
+# Seed data awal(Digunakan Untuk Seed Roles)
 php artisan db:seed
 ```
 
@@ -87,57 +88,83 @@ npm run build
 
 ## ⚙️ Konfigurasi Environment (.env)
 
-Berikut adalah konfigurasi yang **WAJIB** diatur di file `.env`:
+Berikut adalah konfigurasi yang **WAJIB** diperbaiki di file `.env`:
+
+### ⚠️ Perbaikan untuk .env Anda:
+
+```env
+# Application Settings - PERBAIKAN: URL harus lengkap dengan port
+APP_NAME='PKU Patient Management System'
+APP_ENV=local
+APP_KEY=base64:2XlpzNnDmAbCBhN8nEGiEYI3vM/dnHgyFgGL7GoSjT4=
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
+
+# PERBAIKAN: Filesystem harus public untuk upload file
+FILESYSTEM_DISK=public
+
+# PERBAIKAN: Session driver sebaiknya file untuk development
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+SESSION_ENCRYPT=false
+SESSION_PATH=/
+SESSION_DOMAIN=null
+
+# PERBAIKAN: Cache sebaiknya file untuk development
+CACHE_STORE=file
+
+# PERBAIKAN: Queue sebaiknya sync untuk development
+QUEUE_CONNECTION=sync
+
+# Database Configuration - Sudah benar
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=pku_patient_management
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Mail Configuration - Sudah benar
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=aa9dd29d789b07
+MAIL_PASSWORD=25594e5a8ce241
+MAIL_FROM_ADDRESS="perdanaputra2016@gmail.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
+# VITE Configuration - Sudah benar
+VITE_APP_NAME="${APP_NAME}"
+```
 
 ### Database Configuration
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=patient_management
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password
+DB_DATABASE=pku_patient_management
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
-### Application Settings
+### File Storage Configuration
 ```env
-APP_NAME="Patient Management System"
-APP_ENV=local
-APP_KEY=base64:your_app_key_here
-APP_DEBUG=true
-APP_URL=http://127.0.0.1:8000
+# PENTING: Ubah ke public untuk upload file
+FILESYSTEM_DISK=public
 ```
 
-### Mail Configuration (untuk fitur verifikasi email)
+### Session & Cache Configuration
 ```env
-MAIL_MAILER=smtp
-MAIL_HOST=your_smtp_host
-MAIL_PORT=587
-MAIL_USERNAME=your_email@example.com
-MAIL_PASSWORD=your_email_password
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="noreply@yourdomain.com"
-MAIL_FROM_NAME="${APP_NAME}"
-```
-
-### File Storage
-```env
-FILESYSTEM_DISK=local
-```
-
-### Session & Cache
-```env
+# Untuk development, gunakan file driver
 SESSION_DRIVER=file
-SESSION_LIFETIME=120
-CACHE_DRIVER=file
+CACHE_STORE=file
 QUEUE_CONNECTION=sync
 ```
 
-### External API (untuk data pasien)
+### Application URL
 ```env
-PATIENT_API_URL=https://mockapi.pkuwsb.id/api
-PATIENT_API_USERNAME=admin
-PATIENT_API_PASSWORD=secret
+# PENTING: Harus lengkap dengan port
+APP_URL=http://127.0.0.1:8000
 ```
 
 ## 🏃‍♂️ Cara Menjalankan Aplikasi
@@ -147,14 +174,23 @@ PATIENT_API_PASSWORD=secret
 #### 1. Start Laravel Server
 ```bash
 php artisan serve
+
+# Atau bisa langsung dengan
+composer run dev
 ```
 Server akan berjalan di: `http://127.0.0.1:8000`
 
 #### 2. Start Vite Development Server (Terminal Baru)
 ```bash
 npm run dev
+
+# Atau bisa langsung dengan
+composer run dev
 ```
 Vite akan berjalan di: `http://127.0.0.1:5173`
+
+#### 3. Akses Aplikasi
+Buka browser dan kunjungi: `http://127.0.0.1:8000`
 
 ### Production Mode
 
@@ -176,19 +212,80 @@ php artisan view:cache
 # Untuk production, set APP_ENV=production di .env
 ```
 
-## 👤 Akun Default
+## 🔧 Commands Berguna
 
-Setelah menjalankan `php artisan db:seed`, akun berikut akan tersedia:
+### Development
+```bash
+# Install dependencies
+composer install && npm install
 
-### Super Admin
-- **Email**: admin@example.com
-- **Password**: password
-- **Role**: Admin
+# Jalankan migrasi database
+php artisan migrate
 
-### User
-- **Email**: user@example.com
-- **Password**: password
-- **Role**: User
+# Reset database dengan seeder
+php artisan migrate:fresh --seed
+
+# Clear cache
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Buat storage link (penting untuk upload file)
+php artisan storage:link
+
+# Generate IDE Helper (opsional)
+php artisan ide-helper:generate
+```
+
+### Production
+```bash
+# Optimasi untuk production
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+composer install --optimize-autoloader --no-dev
+```
+
+## 🐛 Troubleshooting
+
+### Error: "Storage link not found"
+```bash
+php artisan storage:link
+```
+
+### Error: "Mix manifest not found" atau Vite Error
+```bash
+npm run dev
+# atau untuk production
+npm run build
+```
+
+### Error: "Class not found"
+```bash
+composer dump-autoload
+```
+
+### Error Database Connection
+- Pastikan MySQL service berjalan
+- Periksa konfigurasi database di `.env`
+- Pastikan database `pku_patient_management` sudah dibuat
+
+### Error Permission (Linux/Mac)
+```bash
+sudo chown -R $USER:www-data storage
+sudo chown -R $USER:www-data bootstrap/cache
+chmod -R 775 storage
+chmod -R 775 bootstrap/cache
+```
+
+### Error Upload File "404 Not Found"
+```bash
+# Pastikan storage link sudah dibuat
+php artisan storage:link
+
+# Periksa .env FILESYSTEM_DISK=public
+```
 
 ## 📁 Struktur Project
 
@@ -212,71 +309,10 @@ patient-management-system/
 ├── database/
 │   ├── migrations/               # Database Migrations
 │   └── seeders/                  # Database Seeders
+├── storage/
+│   └── app/public/               # File uploads
 └── public/                       # Public Assets
-```
-
-## 🔧 Commands Berguna
-
-### Development
-```bash
-# Install dependencies
-composer install && npm install
-
-# Jalankan migrasi database
-php artisan migrate
-
-# Reset database dengan seeder
-php artisan migrate:fresh --seed
-
-# Clear cache
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-
-# Generate IDE Helper (opsional)
-php artisan ide-helper:generate
-```
-
-### Production
-```bash
-# Optimasi untuk production
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-composer install --optimize-autoloader --no-dev
-```
-
-## 🐛 Troubleshooting
-
-### Error: "Storage link not found"
-```bash
-php artisan storage:link
-```
-
-### Error: "Mix manifest not found"
-```bash
-npm run dev
-# atau
-npm run build
-```
-
-### Error: "Class not found"
-```bash
-composer dump-autoload
-```
-
-### Error Database Connection
-- Pastikan MySQL service berjalan
-- Periksa konfigurasi database di `.env`
-- Pastikan database sudah dibuat
-
-### Error Permission (Linux/Mac)
-```bash
-sudo chown -R $USER:www-data storage
-sudo chown -R $USER:www-data bootstrap/cache
-chmod -R 775 storage
-chmod -R 775 bootstrap/cache
+    └── storage/                  # Symlink ke storage/app/public
 ```
 
 ## 📝 API Endpoints
@@ -287,17 +323,10 @@ chmod -R 775 bootstrap/cache
 - `PUT /user/patient/update-patient/{id}` - Update patient
 - `DELETE /user/patient/delete-patient/{id}` - Delete patient
 
-### Transaction Management
-- `GET /user/transactions` - List transactions
-- `POST /user/transactions` - Create transaction
-- `PUT /user/transactions/{id}` - Update transaction
-- `DELETE /user/transactions/{id}` - Delete transaction
-
-### Categories
-- `GET /user/categories` - List categories
-- `POST /user/categories` - Create category
-- `PUT /user/categories/{id}` - Update category
-- `DELETE /user/categories/{id}` - Delete category
+### Profile Management
+- `GET /settings/profile` - Profile settings page
+- `PATCH /settings/profile` - Update profile
+- `POST /settings/profile/avatar` - Upload profile photo
 
 ## 🤝 Contributing
 
@@ -309,14 +338,14 @@ chmod -R 775 bootstrap/cache
 
 ## 📄 License
 
-Project ini menggunakan [MIT License](LICENSE).
+Project ini menggunakan LICENSE IBOYY.
 
 ## 📞 Support
 
 Jika mengalami kendala, silakan:
 1. Cek bagian Troubleshooting di atas
 2. Buat issue di GitHub repository
-3. Contact: developer@pkumuhammadiyahwonosobo.id
+3. Contact: danaperdanaputra32@gmail.com
 
 ---
 
