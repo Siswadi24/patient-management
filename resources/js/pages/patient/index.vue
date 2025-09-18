@@ -14,6 +14,7 @@ import Popover from 'primevue/popover';
 import { computed, ref, watch } from 'vue';
 import ShowPatient from './showPatient.vue';
 import FilterModal from './component/filterModal.vue';
+import TambahPatient from './tambahPatient.vue';
 
 const props = defineProps<{
     patients: any[];
@@ -289,14 +290,14 @@ const translateGender = (gender: string) => {
 
             <div class="card rounded-xl border border-gray-700 bg-gray-800 px-3 py-3 shadow">
                 <div class="mb-4 flex flex-col gap-4 rounded-t-lg bg-gray-800 p-4 md:flex-row md:justify-between md:items-center">
-                    <!-- Add Patient Button -->
                     <div class="w-full md:w-auto">
-                        <Button 
+                        <!-- <Button
                             label="Tambah Pasien"
-                            class="w-full border-blue-600 bg-blue-600 text-white hover:bg-blue-700 md:w-auto" 
-                        />
+                            class="w-full border-blue-600 bg-blue-600 text-white hover:bg-blue-700 md:w-auto"
+                        /> -->
+                        <TambahPatient />
                     </div>
-                    
+
                     <!-- Search and Filter Section -->
                     <div class="flex flex-col gap-3 w-full md:flex-row md:gap-2 md:w-auto md:items-center">
                         <!-- Search Input - Full width on mobile, larger on desktop -->
@@ -304,10 +305,10 @@ const translateGender = (gender: string) => {
                             <InputIcon>
                                 <i class="pi pi-search text-gray-400" />
                             </InputIcon>
-                            <InputText 
-                                v-model="searchQuery" 
+                            <InputText
+                                v-model="searchQuery"
                                 placeholder="Cari kata kunci..."
-                                class="w-full border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400 focus:border-blue-500" 
+                                class="w-full border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400 focus:border-blue-500"
                             />
                         </IconField>
 
