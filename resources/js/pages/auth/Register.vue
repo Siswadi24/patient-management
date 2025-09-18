@@ -143,9 +143,9 @@ const submit = () => {
             class="relative hidden overflow-hidden bg-gradient-to-br from-green-600 to-green-800 lg:flex lg:flex-1 dark:from-green-700 dark:to-green-900"
         >
             <div class="relative z-10 flex flex-col justify-center px-12 text-white xl:px-16">
-                <h2 class="mb-4 text-4xl font-bold">Kendalikan Keuangan Anda dengan Lebih Cerdas.</h2>
+                <h2 class="mb-4 text-4xl font-bold">Kendalikan Pasien Anda dengan Lebih Cerdas.</h2>
                 <p class="mb-8 text-lg text-green-100 dark:text-green-200">
-                    Daftar sekarang untuk mulai mencatat, melacak, dan menganalisis keuangan pribadi secara otomatis dan terorganisir.
+                    Daftar sekarang untuk mulai mencatat, melacak, dan menganalisis pasien Anda dengan sistem secara otomatis dan terorganisir.
                 </p>
 
                 <!-- Features Preview -->
@@ -162,8 +162,8 @@ const submit = () => {
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-semibold">Tracking Pengeluaran Harian</h3>
-                            <p class="text-sm text-green-200 dark:text-green-300">Catat dan lacak semua pengeluaran dengan mudah.</p>
+                            <h3 class="font-semibold">Tracking Pasien Harian</h3>
+                            <p class="text-sm text-green-200 dark:text-green-300">Catat dan lacak semua pasien dengan mudah.</p>
                         </div>
                     </div>
 
@@ -175,7 +175,7 @@ const submit = () => {
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-semibold">Laporan Keuangan Otomatis</h3>
+                            <h3 class="font-semibold">Laporan Kesehatan Otomatis</h3>
                             <p class="text-sm text-green-200 dark:text-green-300">Dapatkan insight jelas melalui grafik & laporan real-time.</p>
                         </div>
                     </div>
@@ -193,7 +193,7 @@ const submit = () => {
                         </div>
                         <div>
                             <h3 class="font-semibold">Aman & Terpercaya</h3>
-                            <p class="text-sm text-green-200 dark:text-green-300">Data keuangan Anda terlindungi dengan enkripsi tingkat tinggi.</p>
+                            <p class="text-sm text-green-200 dark:text-green-300">Data kesehatan Anda terlindungi dengan enkripsi tingkat tinggi.</p>
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@ const submit = () => {
                         </div>
                         <div>
                             <div class="text-2xl font-bold">100%</div>
-                            <div class="text-sm text-green-200 dark:text-green-300">Kontrol Keuangan Pribadi</div>
+                            <div class="text-sm text-green-200 dark:text-green-300">Kontrol Akses Pribadi</div>
                         </div>
                     </div>
                 </div>

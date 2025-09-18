@@ -127,20 +127,20 @@ const submit = () => {
         <!-- Right Section - Hero/Promotional Content -->
         <div class="hidden lg:flex lg:flex-1 bg-gradient-to-br from-green-600 to-green-800 dark:from-green-700 dark:to-green-900 relative overflow-hidden">
             <div class="flex flex-col justify-center px-12 xl:px-16 text-white relative z-10">
-                <h2 class="text-4xl font-bold mb-4">Kelola Keuangan Pribadi dengan Lebih Mudah.</h2>
-                <p class="text-green-100 dark:text-green-200 text-lg mb-8">Daftar sekarang untuk mulai mencatat, melacak, dan menganalisis keuangan Anda dengan sistem yang rapi dan terorganisir.</p>
+                <h2 class="text-4xl font-bold mb-4">Kelola pasien dengan Lebih Mudah.</h2>
+                <p class="text-green-100 dark:text-green-200 text-lg mb-8">Daftar sekarang untuk mulai mencatat, melacak, dan menganalisis pasien Anda dengan sistem yang rapi dan terorganisir.</p>
 
                 <!-- Dashboard Preview Image/Mockup -->
                 <div class="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/20 dark:border-white/10">
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <!-- Revenue Card -->
                         <div class="bg-white/20 dark:bg-white/10 rounded-xl p-4">
-                            <p class="text-green-200 dark:text-green-300 text-sm mb-1">Total Revenue</p>
-                            <p class="text-2xl font-bold">$189,374</p>
+                            <p class="text-green-200 dark:text-green-300 text-sm mb-1">Total Pasien</p>
+                            <p class="text-2xl font-bold">189,374</p>
                         </div>
                         <!-- Sales Card -->
                         <div class="bg-white/20 dark:bg-white/10 rounded-xl p-4">
-                            <p class="text-green-200 dark:text-green-300 text-sm mb-1">Sales Overview</p>
+                            <p class="text-green-200 dark:text-green-300 text-sm mb-1">Overview Pasien</p>
                             <p class="text-2xl font-bold">00:01:30</p>
                         </div>
                     </div>
@@ -159,12 +159,12 @@ const submit = () => {
                     <!-- Stats -->
                     <div class="space-y-2">
                         <div class="flex justify-between items-center text-sm">
-                            <span class="text-green-200 dark:text-green-300">Product Ingredients</span>
-                            <span>$25,684</span>
+                            <span class="text-green-200 dark:text-green-300">Jam Pelayanan</span>
+                            <span>6.248 Jam</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
-                            <span class="text-green-200 dark:text-green-300">Sold Units</span>
-                            <span>6.248 Units</span>
+                            <span class="text-green-200 dark:text-green-300">Pasien Dilayani</span>
+                            <span>6.248 Pasien</span>
                         </div>
                     </div>
                 </div>

@@ -83,4 +83,13 @@ class PatientController extends Controller
             ]
         ]);
     }
+
+    public function storePatient(Request $request)
+    {
+        $rules = [];
+        $messages = [];
+        $attributes = [];
+
+        $request->validate($rules, $messages, $attributes);
+    }
 }
