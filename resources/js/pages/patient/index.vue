@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import { FilterMatchMode } from '@primevue/core/api';
-import { Edit, Eye, MoreVertical, Trash, Filter } from 'lucide-vue-next';
+import { Edit, Eye, Filter, MoreVertical, Trash } from 'lucide-vue-next';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -12,8 +12,8 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Popover from 'primevue/popover';
 import { computed, ref, watch } from 'vue';
-import ShowPatient from './showPatient.vue';
 import FilterModal from './component/filterModal.vue';
+import ShowPatient from './showPatient.vue';
 import TambahPatient from './tambahPatient.vue';
 
 const props = defineProps<{
@@ -61,7 +61,7 @@ const serverPerPage = computed(() => props.pagination?.per_page || 15);
 const genderOptions = [
     { label: 'All', value: '' },
     { label: 'Male', value: 'male' },
-    { label: 'Female', value: 'female' }
+    { label: 'Female', value: 'female' },
 ];
 
 const bloodTypeOptions = [
@@ -69,7 +69,7 @@ const bloodTypeOptions = [
     { label: 'A', value: 'A' },
     { label: 'B', value: 'B' },
     { label: 'AB', value: 'AB' },
-    { label: 'O', value: 'O' }
+    { label: 'O', value: 'O' },
 ];
 
 const marriedStatusOptions = [
@@ -77,7 +77,7 @@ const marriedStatusOptions = [
     { label: 'Kawin', value: 'Kawin' },
     { label: 'Belum Kawin', value: 'Belum Kawin' },
     { label: 'Cerai Hidup', value: 'Cerai Hidup' },
-    { label: 'Cerai Mati', value: 'Cerai Mati' }
+    { label: 'Cerai Mati', value: 'Cerai Mati' },
 ];
 
 // Watch for search changes and debounce
@@ -95,13 +95,14 @@ const filteredPatients = computed(() => {
 
     if (searchQuery.value) {
         const searchTerm = searchQuery.value.toLowerCase();
-        filtered = filtered.filter(patient =>
-            patient.first_name.toLowerCase().includes(searchTerm) ||
-            patient.last_name.toLowerCase().includes(searchTerm) ||
-            patient.rm_number.toLowerCase().includes(searchTerm) ||
-            patient.phone_number.toLowerCase().includes(searchTerm) ||
-            patient.city_address.toLowerCase().includes(searchTerm) ||
-            (patient.blood_type && patient.blood_type.toLowerCase().includes(searchTerm))
+        filtered = filtered.filter(
+            (patient) =>
+                patient.first_name.toLowerCase().includes(searchTerm) ||
+                patient.last_name.toLowerCase().includes(searchTerm) ||
+                patient.rm_number.toLowerCase().includes(searchTerm) ||
+                patient.phone_number.toLowerCase().includes(searchTerm) ||
+                patient.city_address.toLowerCase().includes(searchTerm) ||
+                (patient.blood_type && patient.blood_type.toLowerCase().includes(searchTerm)),
         );
     }
 
@@ -115,13 +116,14 @@ const totalPages = computed(() => {
 
     if (searchQuery.value) {
         const searchTerm = searchQuery.value.toLowerCase();
-        filtered = filtered.filter(patient =>
-            patient.first_name.toLowerCase().includes(searchTerm) ||
-            patient.last_name.toLowerCase().includes(searchTerm) ||
-            patient.rm_number.toLowerCase().includes(searchTerm) ||
-            patient.phone_number.toLowerCase().includes(searchTerm) ||
-            patient.city_address.toLowerCase().includes(searchTerm) ||
-            (patient.blood_type && patient.blood_type.toLowerCase().includes(searchTerm))
+        filtered = filtered.filter(
+            (patient) =>
+                patient.first_name.toLowerCase().includes(searchTerm) ||
+                patient.last_name.toLowerCase().includes(searchTerm) ||
+                patient.rm_number.toLowerCase().includes(searchTerm) ||
+                patient.phone_number.toLowerCase().includes(searchTerm) ||
+                patient.city_address.toLowerCase().includes(searchTerm) ||
+                (patient.blood_type && patient.blood_type.toLowerCase().includes(searchTerm)),
         );
     }
 
@@ -246,7 +248,7 @@ const onPageChange = (event: any) => {
 const onRowsChange = (event: any) => {
     const params: any = {
         page: 1,
-        per_page: event.rows
+        per_page: event.rows,
     };
 
     // Preserve current filters
@@ -281,13 +283,20 @@ const translateGender = (gender: string) => {
             <ShowPatient v-model:visible="showPatientModal" :patient="selectedPatient" />
 
             <!-- Filter Modal Component -->
-            <FilterModal v-model:visible="showFilterModal" v-model:selectedGender="selectedGender"
-                v-model:selectedBloodType="selectedBloodType" v-model:selectedMarriedStatus="selectedMarriedStatus"
-                v-model:selectedEthnic="selectedEthnic" v-model:selectedEducation="selectedEducation"
-                v-model:selectedJob="selectedJob" @apply-filters="applyFilters" @clear-filters="clearFilters" />
+            <FilterModal
+                v-model:visible="showFilterModal"
+                v-model:selectedGender="selectedGender"
+                v-model:selectedBloodType="selectedBloodType"
+                v-model:selectedMarriedStatus="selectedMarriedStatus"
+                v-model:selectedEthnic="selectedEthnic"
+                v-model:selectedEducation="selectedEducation"
+                v-model:selectedJob="selectedJob"
+                @apply-filters="applyFilters"
+                @clear-filters="clearFilters"
+            />
 
             <div class="card rounded-xl border border-gray-700 bg-gray-800 px-3 py-3 shadow">
-                <div class="mb-4 flex flex-col gap-4 rounded-t-lg bg-gray-800 p-4 md:flex-row md:justify-between md:items-center">
+                <div class="mb-4 flex flex-col gap-4 rounded-t-lg bg-gray-800 p-4 md:flex-row md:items-center md:justify-between">
                     <div class="w-full md:w-auto">
                         <!-- <Button
                             label="Tambah Pasien"
@@ -297,7 +306,7 @@ const translateGender = (gender: string) => {
                     </div>
 
                     <!-- Search and Filter Section -->
-                    <div class="flex flex-col gap-3 w-full md:flex-row md:gap-2 md:w-auto md:items-center">
+                    <div class="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center md:gap-2">
                         <!-- Search Input - Full width on mobile, larger on desktop -->
                         <IconField class="w-full md:w-96">
                             <InputIcon>
@@ -313,7 +322,7 @@ const translateGender = (gender: string) => {
                         <!-- Filter Button - Full width on mobile, compact on desktop -->
                         <Button
                             @click="showFilterModal = true"
-                            class="w-full md:w-auto border-gray-600 bg-gray-600 text-white hover:bg-gray-700 justify-center md:justify-start"
+                            class="w-full justify-center border-gray-600 bg-gray-600 text-white hover:bg-gray-700 md:w-auto md:justify-start"
                             severity="secondary"
                         >
                             <Filter class="h-4 w-4 md:mr-0" />
@@ -325,44 +334,58 @@ const translateGender = (gender: string) => {
                 <!-- Mobile Card View -->
                 <div class="block md:hidden">
                     <div class="space-y-4">
-                        <div v-for="patient in filteredPatients" :key="patient.id"
-                            class="bg-gray-700 rounded-lg p-4 border border-gray-600">
-                            <div class="flex justify-between items-start mb-3">
-                                <div class="flex items-center space-x-3 flex-1">
-                                    <img :src="patient.avatar" :alt="`${patient.first_name} ${patient.last_name}`"
-                                        class="h-12 w-12 rounded-full object-cover border border-gray-500" />
+                        <div v-for="patient in filteredPatients" :key="patient.id" class="rounded-lg border border-gray-600 bg-gray-700 p-4">
+                            <div class="mb-3 flex items-start justify-between">
+                                <div class="flex flex-1 items-center space-x-3">
+                                    <img
+                                        :src="patient.avatar"
+                                        :alt="`${patient.first_name} ${patient.last_name}`"
+                                        class="h-12 w-12 rounded-full border border-gray-500 object-cover"
+                                    />
                                     <div>
-                                        <h3 class="text-gray-100 font-semibold text-lg">{{ patient.first_name }} {{
-                                            patient.last_name }}</h3>
-                                        <p class="text-gray-400 text-sm">{{ patient.rm_number }}</p>
+                                        <h3 class="text-lg font-semibold text-gray-100">{{ patient.first_name }} {{ patient.last_name }}</h3>
+                                        <p class="text-sm text-gray-400">{{ patient.rm_number }}</p>
                                     </div>
                                 </div>
                                 <div class="ml-4">
-                                    <Button @click="togglePopover($event, patient.id)" icon severity="secondary"
+                                    <Button
+                                        @click="togglePopover($event, patient.id)"
+                                        icon
+                                        severity="secondary"
                                         class="border-gray-600 bg-gray-600 p-2 text-white hover:bg-gray-700"
-                                        size="small">
+                                        size="small"
+                                    >
                                         <MoreVertical class="h-4 w-4" />
                                     </Button>
 
                                     <Popover :ref="(el) => (popoverRefs[`popover_${patient.id}`] = el)">
                                         <div class="flex w-40 flex-col gap-2 p-2">
-                                            <Button @click="handleAction('show', patient)" severity="info"
+                                            <Button
+                                                @click="handleAction('show', patient)"
+                                                severity="info"
                                                 class="justify-start border-blue-600 bg-blue-600 py-2 text-sm text-white hover:bg-blue-700"
-                                                size="small">
+                                                size="small"
+                                            >
                                                 <Eye class="mr-2 h-4 w-4" />
                                                 Lihat
                                             </Button>
 
-                                            <Button @click="handleAction('edit', patient)" severity="warning"
+                                            <Button
+                                                @click="handleAction('edit', patient)"
+                                                severity="warning"
                                                 class="justify-start border-yellow-600 bg-yellow-600 py-2 text-sm text-white hover:bg-yellow-700"
-                                                size="small">
+                                                size="small"
+                                            >
                                                 <Edit class="mr-2 h-4 w-4" />
                                                 Edit
                                             </Button>
 
-                                            <Button @click="handleAction('delete', patient)" severity="danger"
+                                            <Button
+                                                @click="handleAction('delete', patient)"
+                                                severity="danger"
                                                 class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700"
-                                                size="small">
+                                                size="small"
+                                            >
                                                 <Trash class="mr-2 h-4 w-4" />
                                                 Hapus
                                             </Button>
@@ -371,48 +394,54 @@ const translateGender = (gender: string) => {
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4 mb-3">
+                            <div class="mb-3 grid grid-cols-2 gap-4">
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Jenis Kelamin</p>
-                                    <span :class="`inline-block px-2 py-1 text-xs rounded-full text-white ${getGenderBadge(patient.gender)}`">
+                                    <p class="text-xs tracking-wide text-gray-400 uppercase">Jenis Kelamin</p>
+                                    <span :class="`inline-block rounded-full px-2 py-1 text-xs text-white ${getGenderBadge(patient.gender)}`">
                                         {{ translateGender(patient.gender) }}
                                     </span>
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Umur</p>
-                                    <p class="text-gray-100 font-semibold">{{ calculateAge(patient.birth_date) }} tahun</p>
+                                    <p class="text-xs tracking-wide text-gray-400 uppercase">Umur</p>
+                                    <p class="font-semibold text-gray-100">{{ calculateAge(patient.birth_date) }} tahun</p>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4 mb-3">
+                            <div class="mb-3 grid grid-cols-2 gap-4">
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Telepon</p>
+                                    <p class="text-xs tracking-wide text-gray-400 uppercase">Telepon</p>
                                     <p class="text-gray-100">{{ patient.phone_number }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs uppercase tracking-wide">Kota</p>
+                                    <p class="text-xs tracking-wide text-gray-400 uppercase">Kota</p>
                                     <p class="text-gray-100">{{ patient.city_address }}</p>
                                 </div>
                             </div>
 
                             <div v-if="patient.blood_type" class="mb-3">
-                                <p class="text-gray-400 text-xs uppercase tracking-wide">Golongan Darah</p>
-                                <p class="text-gray-100 text-sm">{{ patient.blood_type }}</p>
+                                <p class="text-xs tracking-wide text-gray-400 uppercase">Golongan Darah</p>
+                                <p class="text-sm text-gray-100">{{ patient.blood_type }}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Mobile Pagination -->
                     <div class="mt-6 flex justify-center">
-                        <Button v-if="currentPage > 1" @click="currentPage--"
-                            class="mr-2 bg-gray-600 hover:bg-gray-700 text-white border-gray-600" size="small">
+                        <Button
+                            v-if="currentPage > 1"
+                            @click="currentPage--"
+                            class="mr-2 border-gray-600 bg-gray-600 text-white hover:bg-gray-700"
+                            size="small"
+                        >
                             Sebelumnya
                         </Button>
-                        <span class="flex items-center px-4 text-gray-300">
-                            Halaman {{ currentPage }} dari {{ totalPages }}
-                        </span>
-                        <Button v-if="currentPage < totalPages" @click="currentPage++"
-                            class="ml-2 bg-gray-600 hover:bg-gray-700 text-white border-gray-600" size="small">
+                        <span class="flex items-center px-4 text-gray-300"> Halaman {{ currentPage }} dari {{ totalPages }} </span>
+                        <Button
+                            v-if="currentPage < totalPages"
+                            @click="currentPage++"
+                            class="ml-2 border-gray-600 bg-gray-600 text-white hover:bg-gray-700"
+                            size="small"
+                        >
                             Selanjutnya
                         </Button>
                     </div>
@@ -429,7 +458,7 @@ const translateGender = (gender: string) => {
                         :rows="serverPerPage"
                         :rowsPerPageOptions="[15, 30, 50, 100]"
                         :totalRecords="pagination?.total || 0"
-                        :first="((serverCurrentPage - 1) * serverPerPage)"
+                        :first="(serverCurrentPage - 1) * serverPerPage"
                         @page="onPageChange"
                         @rows-per-page-change="onRowsChange"
                         tableStyle="min-width: 50rem"
@@ -446,14 +475,17 @@ const translateGender = (gender: string) => {
 
                         <Column field="avatar" header="Avatar" style="width: 8%">
                             <template #body="{ data }">
-                                <img :src="data.avatar" :alt="`${data.first_name} ${data.last_name}`"
-                                    class="h-10 w-10 rounded-full object-cover border border-gray-500" />
+                                <img
+                                    :src="data.avatar"
+                                    :alt="`${data.first_name} ${data.last_name}`"
+                                    class="h-10 w-10 rounded-full border border-gray-500 object-cover"
+                                />
                             </template>
                         </Column>
 
                         <Column field="rm_number" header="No. RM" sortable style="width: 12%">
                             <template #body="{ data }">
-                                <span class="text-gray-100 font-mono">{{ data.rm_number }}</span>
+                                <span class="font-mono text-gray-100">{{ data.rm_number }}</span>
                             </template>
                         </Column>
 
@@ -465,7 +497,7 @@ const translateGender = (gender: string) => {
 
                         <Column field="gender" header="Jenis Kelamin" sortable style="width: 10%">
                             <template #body="{ data }">
-                                <span :class="`inline-block px-2 py-1 text-xs rounded-full text-white ${getGenderBadge(data.gender)}`">
+                                <span :class="`inline-block rounded-full px-2 py-1 text-xs text-white ${getGenderBadge(data.gender)}`">
                                     {{ translateGender(data.gender) }}
                                 </span>
                             </template>
@@ -498,28 +530,41 @@ const translateGender = (gender: string) => {
                         <Column field="actions" header="Aksi" style="width: 7%">
                             <template #body="{ data }">
                                 <div class="flex justify-center">
-                                    <Button @click="togglePopover($event, data.id)" icon severity="secondary"
-                                        class="border-gray-600 bg-gray-600 p-2 text-white hover:bg-gray-700">
+                                    <Button
+                                        @click="togglePopover($event, data.id)"
+                                        icon
+                                        severity="secondary"
+                                        class="border-gray-600 bg-gray-600 p-2 text-white hover:bg-gray-700"
+                                    >
                                         <MoreVertical class="h-4 w-4" />
                                     </Button>
 
                                     <Popover :ref="(el) => (popoverRefs[`popover_${data.id}`] = el)">
                                         <div class="flex w-40 flex-col gap-2 p-2">
-                                            <Button @click="handleAction('show', data)" severity="info"
+                                            <Button
+                                                @click="handleAction('show', data)"
+                                                severity="info"
                                                 class="justify-start border-blue-600 bg-blue-600 py-2 text-sm text-white hover:bg-blue-700"
-                                                size="small">
+                                                size="small"
+                                            >
                                                 <Eye class="mr-2 h-4 w-4" />
                                                 Lihat
                                             </Button>
-                                            <Button @click="handleAction('edit', data)" severity="warning"
+                                            <Button
+                                                @click="handleAction('edit', data)"
+                                                severity="warning"
                                                 class="justify-start border-yellow-600 bg-yellow-600 py-2 text-sm text-white hover:bg-yellow-700"
-                                                size="small">
+                                                size="small"
+                                            >
                                                 <Edit class="mr-2 h-4 w-4" />
                                                 Edit
                                             </Button>
-                                            <Button @click="handleAction('delete', data)" severity="danger"
+                                            <Button
+                                                @click="handleAction('delete', data)"
+                                                severity="danger"
                                                 class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700"
-                                                size="small">
+                                                size="small"
+                                            >
                                                 <Trash class="mr-2 h-4 w-4" />
                                                 Hapus
                                             </Button>

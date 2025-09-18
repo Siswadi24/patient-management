@@ -3,11 +3,7 @@
         <!-- AlertRS Component -->
         <AlertRS v-if="showAlert" :title="alertTitle" :message="alertMessage" @close="closeAlert" />
 
-        <Button
-            label="Tambah Pasien"
-            @click="visible = true"
-            class="w-full border-blue-600 bg-blue-600 text-white hover:bg-blue-700 md:w-auto"
-        />
+        <Button label="Tambah Pasien" @click="visible = true" class="w-full border-blue-600 bg-blue-600 text-white hover:bg-blue-700 md:w-auto" />
 
         <Dialog
             v-model:visible="visible"
@@ -18,9 +14,7 @@
             :closable="!form.processing"
             :modal="true"
         >
-            <span class="text-surface-500 dark:text-surface-400 mb-8 block">
-                Tambahkan data pasien baru ke dalam sistem.
-            </span>
+            <span class="text-surface-500 dark:text-surface-400 mb-8 block"> Tambahkan data pasien baru ke dalam sistem. </span>
 
             <form @submit.prevent="handleSubmit">
                 <!-- Informasi Dasar -->
@@ -40,9 +34,7 @@
                                 maxlength="6"
                                 :class="{ 'border-red-500': form.errors.rm_number }"
                             />
-                            <small class="text-gray-400 text-xs mt-1">
-                                Harus 6 digit angka. Jika kosong, akan digenerate otomatis.
-                            </small>
+                            <small class="mt-1 text-xs text-gray-400"> Harus 6 digit angka. Jika kosong, akan digenerate otomatis. </small>
                             <div v-if="form.errors.rm_number" class="text-sm text-red-400">
                                 {{ form.errors.rm_number }}
                             </div>
@@ -603,7 +595,7 @@ function handleSubmit() {
         bpjs_number: data.bpjs_number?.trim() || null,
         communication_barrier: data.communication_barrier?.trim() || null,
         disability_status: data.disability_status?.trim() || null,
-        avatar: data.avatar || null
+        avatar: data.avatar || null,
     })).post(route('user.patient.storePatient'), {
         preserveScroll: true,
         onSuccess: (page) => {
@@ -620,7 +612,7 @@ function handleSubmit() {
             } else {
                 showErrorAlert(errors);
             }
-        }
+        },
     });
 }
 
@@ -692,6 +684,6 @@ function openDialog() {
 }
 
 defineExpose({
-    openDialog
+    openDialog,
 });
 </script>
