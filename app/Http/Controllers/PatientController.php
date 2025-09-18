@@ -58,7 +58,6 @@ class PatientController extends Controller
                 'next_page_url' => $data['data']['next_page_url'],
                 'prev_page_url' => $data['data']['prev_page_url'],
             ] : [];
-
         } catch (RequestException $e) {
             $patients = [];
             $pagination = [];
@@ -138,7 +137,6 @@ class PatientController extends Controller
                     return back()->withErrors(['api' => $errorMessage])->withInput();
                 }
             }
-
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $responseBody = $e->getResponse()->getBody()->getContents();
@@ -160,7 +158,6 @@ class PatientController extends Controller
             }
 
             return back()->withErrors(['api' => 'Terjadi kesalahan saat menghubungi server. Silakan coba lagi.'])->withInput();
-
         } catch (\Exception $e) {
             return back()->withErrors(['api' => 'Terjadi kesalahan yang tidak terduga. Silakan coba lagi.'])->withInput();
         }
@@ -231,7 +228,6 @@ class PatientController extends Controller
                     return back()->withErrors(['api' => $errorMessage])->withInput();
                 }
             }
-
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $responseBody = $e->getResponse()->getBody()->getContents();
@@ -253,7 +249,6 @@ class PatientController extends Controller
             }
 
             return back()->withErrors(['api' => 'Terjadi kesalahan saat menghubungi server. Silakan coba lagi.'])->withInput();
-
         } catch (\Exception $e) {
             return back()->withErrors(['api' => 'Terjadi kesalahan yang tidak terduga. Silakan coba lagi.'])->withInput();
         }
@@ -276,12 +271,11 @@ class PatientController extends Controller
             $responseData = json_decode($response->getBody()->getContents(), true);
 
             if ($responseData['success'] ?? false) {
-                return redirect()->route('user.patient.records')->with('success', 'Data pasien berhasil dihapus');
+                return back();
             } else {
                 $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat menghapus data';
                 return back()->withErrors(['api' => $errorMessage]);
             }
-
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $responseBody = $e->getResponse()->getBody()->getContents();

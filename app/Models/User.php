@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -16,17 +17,13 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
-        'photo',
-        'phone',
-        'address',
         'password',
-        'otp_register',
-        'otp_login'
+        'photo',
     ];
 
     /**
@@ -60,5 +57,17 @@ class User extends Authenticatable
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Get the photo URL accessor.
+     */
+    public function getPhotoUrlAttribute(): string
+    {
+        if ($this->photo && Storage::disk('public')->exists($this->photo)) {
+            return asset('storage/' . $this->photo);
+        }
+
+        return "https://api.dicebear.com/6.x/identicon/svg?seed=" . urlencode($this->name);
     }
 }
