@@ -166,10 +166,8 @@ const handleAction = (action: string, patient: any) => {
             showPatientDetails(patient);
             break;
         case 'edit':
-            console.log('Edit patient:', patient);
             break;
         case 'delete':
-            console.log('Delete patient:', patient);
             break;
     }
 };

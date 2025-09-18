@@ -45,6 +45,7 @@ Route::prefix('user')->name('user.')->middleware(['auth', 'verified', 'role:user
     Route::prefix('patient')->name('patient.')->group(function () {
         Route::get('/', [PatientController::class, 'index'])->name('records');
         Route::post('/store-patient', [PatientController::class, 'storePatient'])->name('storePatient');
+        Route::put('/update-patient/{id}', [PatientController::class, 'updatePatient'])->name('updatePatient');
     });
 });
 

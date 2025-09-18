@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Log;
 
 class PatientController extends Controller
 {
@@ -14,11 +13,8 @@ class PatientController extends Controller
     {
         try {
             $client = new Client();
-
-            // Build query parameters
             $queryParams = [];
 
-            // Pagination parameters
             if ($request->has('page')) {
                 $queryParams['page'] = $request->get('page');
             }
@@ -27,12 +23,10 @@ class PatientController extends Controller
                 $queryParams['per_page'] = $request->get('per_page');
             }
 
-            // Search parameter
             if ($request->has('search') && !empty($request->get('search'))) {
                 $queryParams['search'] = $request->get('search');
             }
 
-            // Individual filter parameters - API supports direct parameter names
             $filterParams = ['gender', 'ethnic', 'education', 'married_status', 'job', 'blood_type'];
             foreach ($filterParams as $param) {
                 if ($request->has($param) && !empty($request->get($param))) {
@@ -89,14 +83,9 @@ class PatientController extends Controller
     {
         try {
             $client = new Client();
-
-            // Generate or use provided RM number
             $rmNumber = $request->rm_number ?? $this->generateRandomRMNumber();
-
-            // Handle file upload for avatar
             $avatarUrl = 'https://api.dicebear.com/6.x/identicon/svg?seed=' . strtolower($request->first_name . '.' . $request->last_name);
 
-            // Prepare data for API - fix the ethnic field to be JSON string
             $apiData = [
                 'rm_number' => $rmNumber,
                 'avatar' => $avatarUrl,
@@ -113,7 +102,7 @@ class PatientController extends Controller
                 'emergency_phone_number' => $request->emergency_phone_number,
                 'identity_number' => $request->identity_number,
                 'bpjs_number' => $request->bpjs_number,
-                'ethnic' => json_encode(['name' => $request->ethnic]), // Convert to JSON string like the API expects
+                'ethnic' => json_encode(['name' => $request->ethnic]),
                 'education' => $request->education,
                 'communication_barrier' => $request->communication_barrier,
                 'disability_status' => $request->disability_status,
@@ -124,7 +113,6 @@ class PatientController extends Controller
                 'blood_type' => $request->blood_type,
             ];
 
-            // Send POST request to API
             $response = $client->request('POST', 'https://mockapi.pkuwsb.id/api/patient', [
                 'headers' => [
                     'X-username' => 'admin',
@@ -138,14 +126,9 @@ class PatientController extends Controller
 
             $responseData = json_decode($response->getBody()->getContents(), true);
 
-            // Log the API response
-            Log::info('API Response:', $responseData);
-
-            // Check if API response indicates success
             if ($responseData['success'] ?? false) {
                 return redirect()->route('user.patient.records')->with('success', 'Data pasien berhasil ditambahkan dengan No. RM: ' . $rmNumber);
             } else {
-                // Handle API validation errors
                 $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat menyimpan data';
                 $errors = $responseData['errors'] ?? [];
 
@@ -157,12 +140,10 @@ class PatientController extends Controller
             }
 
         } catch (RequestException $e) {
-
             if ($e->hasResponse()) {
                 $responseBody = $e->getResponse()->getBody()->getContents();
                 $responseData = json_decode($responseBody, true);
 
-                // Handle API validation errors (422 status)
                 if ($e->getResponse()->getStatusCode() === 422) {
                     $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan validasi';
                     $errors = $responseData['errors'] ?? [];
@@ -174,7 +155,6 @@ class PatientController extends Controller
                     }
                 }
 
-                // Handle other API errors
                 $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat menghubungi server';
                 return back()->withErrors(['api' => $errorMessage])->withInput();
             }
@@ -182,24 +162,15 @@ class PatientController extends Controller
             return back()->withErrors(['api' => 'Terjadi kesalahan saat menghubungi server. Silakan coba lagi.'])->withInput();
 
         } catch (\Exception $e) {
-
             return back()->withErrors(['api' => 'Terjadi kesalahan yang tidak terduga. Silakan coba lagi.'])->withInput();
         }
     }
 
-    /**
-     * Generate truly random 6-digit RM number
-     */
     private function generateRandomRMNumber(): string
     {
-        // Generate random 6-digit number between 100000-999999
         return str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT);
     }
 
-    /**
-     * Alternative: Generate random RM with retry logic for uniqueness
-     * This method could be used if we need to check for uniqueness against database/API
-     */
     private function generateUniqueRandomRMNumber(): string
     {
         $maxAttempts = 10;
@@ -208,14 +179,9 @@ class PatientController extends Controller
         do {
             $rmNumber = str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT);
             $attempt++;
-
-            // In a real scenario, you'd check against database/API here
-            // For now, just return the generated number
             return $rmNumber;
-
         } while ($attempt < $maxAttempts);
 
-        // Fallback: use timestamp-based approach
         $timestamp = now()->timestamp;
         return substr((string)$timestamp, -6);
     }

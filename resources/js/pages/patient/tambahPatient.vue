@@ -501,7 +501,7 @@ const alertTitle = ref('');
 const alertMessage = ref('');
 
 const form = useForm({
-    rm_number: '', // Add RM number field
+    rm_number: '',
     first_name: '',
     last_name: '',
     gender: '',
@@ -527,7 +527,6 @@ const form = useForm({
     avatar: null,
 });
 
-// Options based on the schema
 const genderOptions = [
     { label: 'Laki-laki', value: 'male' },
     { label: 'Perempuan', value: 'female' },
@@ -587,7 +586,6 @@ const jobOptions = [
 ];
 
 function handleSubmit() {
-    // Format birth date to YYYY-MM-DD
     let formattedDate = '';
     if (form.birth_date instanceof Date) {
         const year = form.birth_date.getFullYear();
@@ -598,17 +596,9 @@ function handleSubmit() {
         formattedDate = '';
     }
 
-    // Log data being submitted for debugging
-    console.log('Submitting patient data:', {
-        ...form.data(),
-        birth_date: formattedDate
-    });
-
-    // Submit form using Inertia.js - let API handle all validation
     form.transform((data) => ({
         ...data,
         birth_date: formattedDate,
-        // Ensure optional fields are null if empty (not empty strings)
         rm_number: data.rm_number?.trim() || null,
         bpjs_number: data.bpjs_number?.trim() || null,
         communication_barrier: data.communication_barrier?.trim() || null,
@@ -617,29 +607,19 @@ function handleSubmit() {
     })).post(route('user.patient.storePatient'), {
         preserveScroll: true,
         onSuccess: (page) => {
-            console.log('Form submission successful:', page);
             closeDialog();
             resetForm();
             showSuccessAlert();
-
-            // Reload the page to show updated patient list
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
         },
         onError: (errors) => {
-            console.log('Form submission errors:', errors);
-
-            // Handle API validation errors directly
             if (errors.api) {
                 showErrorAlert({ api: [errors.api] });
             } else {
-                // Display API validation errors from the response
                 showErrorAlert(errors);
             }
-        },
-        onFinish: () => {
-            console.log('Form submission finished');
         }
     });
 }
@@ -647,7 +627,6 @@ function handleSubmit() {
 function onFileSelect(event: any) {
     const file = event.files[0];
     if (file) {
-        // Basic client-side validation for better UX
         if (file.size > 2 * 1024 * 1024) {
             showErrorAlert({ avatar: ['Ukuran file maksimal 2MB'] });
             return;
@@ -660,7 +639,6 @@ function onFileSelect(event: any) {
         }
 
         form.avatar = file;
-        console.log('File selected:', file.name, file.size, file.type);
     }
 }
 
@@ -669,7 +647,6 @@ function showSuccessAlert() {
     alertMessage.value = 'Data pasien berhasil ditambahkan. Halaman akan dimuat ulang untuk menampilkan data terbaru.';
     showAlert.value = true;
 
-    // Auto-close alert after 3 seconds
     setTimeout(() => {
         showAlert.value = false;
     }, 3000);
@@ -701,25 +678,19 @@ function closeAlert() {
 
 function closeDialog() {
     visible.value = false;
-
-    // Clear any errors when closing
     form.clearErrors();
 }
 
 function resetForm() {
     form.reset();
     form.clearErrors();
-
-    // Reset the date picker specifically
     form.birth_date = null;
 }
 
-// Expose a method to open the dialog (useful for parent components)
 function openDialog() {
     visible.value = true;
 }
 
-// Optional: expose the function for parent component
 defineExpose({
     openDialog
 });
