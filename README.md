@@ -167,6 +167,23 @@ QUEUE_CONNECTION=sync
 APP_URL=http://127.0.0.1:8000
 ```
 
+### 📧 Konfigurasi Email (Mailtrap)
+
+Untuk fitur notifikasi email dan verifikasi, aplikasi menggunakan **Mailtrap** sebagai SMTP testing service. Konfigurasi email yang sudah disediakan:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=aa9dd29d789b07
+MAIL_PASSWORD=25594e5a8ce241
+MAIL_FROM_ADDRESS="perdanaputra2016@gmail.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+> **📝 Note Penting**: 
+> Notifikasi email menggunakan **Mailtrap** untuk testing. Jika Anda mengalami kesulitan dengan konfigurasi email atau membutuhkan akses OTP untuk login, silakan hubungi developer di email **danaperdanaputra32@gmail.com** dan saya akan memberikan informasi OTP yang diperlukan.
+
 ## 🏃‍♂️ Cara Menjalankan Aplikasi
 
 ### Development Mode
@@ -287,6 +304,10 @@ php artisan storage:link
 # Periksa .env FILESYSTEM_DISK=public
 ```
 
+### Error Email/SMTP
+- Pastikan konfigurasi email Mailtrap sudah benar
+- Jika masih bermasalah, hubungi **danaperdanaputra32@gmail.com** untuk bantuan OTP
+
 ## 📁 Struktur Project
 
 ```
@@ -345,7 +366,10 @@ Project ini menggunakan LICENSE IBOYY.
 Jika mengalami kendala, silakan:
 1. Cek bagian Troubleshooting di atas
 2. Buat issue di GitHub repository
-3. Contact: danaperdanaputra32@gmail.com
+3. **Contact Developer**: danaperdanaputra32@gmail.com 
+   - Untuk bantuan konfigurasi email/SMTP
+   - Untuk mendapatkan OTP login
+   - Untuk support teknis lainnya
 
 ---
 
