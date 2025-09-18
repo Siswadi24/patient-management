@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref, defineProps, defineEmits, nextTick, onMounted } from 'vue'
 
 const props = defineProps<{
   title: string
@@ -13,16 +13,31 @@ const emit = defineEmits<{
 }>()
 
 const isOpen = ref(true)
+
+onMounted(() => {
+  nextTick(() => {
+    // Remove any existing focus from other elements
+    if (document.activeElement && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  });
+});
+
+const handleClose = () => {
+  isOpen.value = false;
+  emit('close');
+};
 </script>
 
 <template>
-<Dialog v-model:open="isOpen" @update:open="emit('close')">
+<Dialog v-model:open="isOpen" :modal="true" @update:open="handleClose">
   <DialogContent
     class="w-full max-w-sm border border-sky-300
            bg-gradient-to-br from-sky-100 via-white to-sky-50/80
            backdrop-blur-md rounded-2xl shadow-2xl p-6
            transition-all duration-300 ease-out
-           opacity-0 scale-95 data-[state=open]:opacity-100 data-[state=open]:scale-100"
+           focus:outline-none"
+    :autofocus="false"
   >
     <!-- Header terpusat -->
     <DialogHeader class="flex flex-col items-center text-center gap-2">
@@ -30,7 +45,7 @@ const isOpen = ref(true)
         {{ props.title }}
       </DialogTitle>
       <DialogDescription class="text-sky-800 text-sm leading-relaxed">
-        <p v-html=" props.message" class="text-sm text-red-600 whitespace-pre-line" />
+        <p v-html="props.message" class="text-sm text-red-600 whitespace-pre-line" />
       </DialogDescription>
     </DialogHeader>
 
@@ -40,13 +55,14 @@ const isOpen = ref(true)
         class="px-5 py-2 bg-gradient-to-r from-red-500 to-red-600
                hover:from-red-600 hover:to-red-700 text-white
                font-semibold rounded-lg shadow-md
-               transition-transform transform hover:scale-105 active:scale-95 cursor-pointer"
-        @click="emit('close')"
+               transition-transform transform hover:scale-105 active:scale-95 cursor-pointer
+               focus:outline-none"
+        @click="handleClose"
+        :autofocus="false"
       >
         Tutup
       </Button>
     </DialogFooter>
   </DialogContent>
 </Dialog>
-
 </template>

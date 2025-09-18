@@ -271,7 +271,7 @@ class PatientController extends Controller
             $responseData = json_decode($response->getBody()->getContents(), true);
 
             if ($responseData['success'] ?? false) {
-                return back();
+                return back()->with('delete_success', true);
             } else {
                 $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat menghapus data';
                 return back()->withErrors(['api' => $errorMessage]);
