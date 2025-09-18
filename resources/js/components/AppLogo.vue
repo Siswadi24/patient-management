@@ -12,6 +12,6 @@ const appName = usePage().props.appName as string
     <img src="/assets/logoADA.png" alt="Logo Simku" class="h-20 object-contain" />
     <div class="grid flex-1 text-sm">
         <span class="mb-0.5 truncate leading-tight font-semibold tracking-tight">{{ appName }}</span>
-        <span class="text-xs text-muted-foreground">Manage Keuangan Lebih Rapi & Friendly</span>
+        <span class="text-xs text-muted-foreground">Manage Pasien Lebih Rapi & Friendly</span>
     </div>
 </template>
