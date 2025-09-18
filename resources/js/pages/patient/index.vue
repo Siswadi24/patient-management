@@ -16,6 +16,7 @@ import FilterModal from './component/filterModal.vue';
 import ShowPatient from './showPatient.vue';
 import TambahPatient from './tambahPatient.vue';
 import EditPatient from './editPatient.vue';
+import DeletePatient from './deletePatient.vue';
 
 const props = defineProps<{
     patients: any[];
@@ -381,15 +382,7 @@ const translateGender = (gender: string) => {
                                                 Edit
                                             </Button>
 
-                                            <Button
-                                                @click="handleAction('delete', patient)"
-                                                severity="danger"
-                                                class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700"
-                                                size="small"
-                                            >
-                                                <Trash class="mr-2 h-4 w-4" />
-                                                Hapus
-                                            </Button>
+                                            <DeletePatient :patient="patient" />
                                         </div>
                                     </Popover>
                                 </div>
@@ -552,15 +545,7 @@ const translateGender = (gender: string) => {
                                                 Lihat
                                             </Button>
                                             <EditPatient :patient="data" />
-                                            <Button
-                                                @click="handleAction('delete', data)"
-                                                severity="danger"
-                                                class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700"
-                                                size="small"
-                                            >
-                                                <Trash class="mr-2 h-4 w-4" />
-                                                Hapus
-                                            </Button>
+                                            <DeletePatient :patient="data" />
                                         </div>
                                     </Popover>
                                 </div>

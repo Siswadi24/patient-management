@@ -259,6 +259,44 @@ class PatientController extends Controller
         }
     }
 
+    public function deletePatient($id)
+    {
+        try {
+            $client = new Client();
+            $response = $client->request('DELETE', "https://mockapi.pkuwsb.id/api/patient/{$id}", [
+                'headers' => [
+                    'X-username' => 'admin',
+                    'X-password' => 'secret',
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
+                'timeout' => 30,
+            ]);
+
+            $responseData = json_decode($response->getBody()->getContents(), true);
+
+            if ($responseData['success'] ?? false) {
+                return redirect()->route('user.patient.records')->with('success', 'Data pasien berhasil dihapus');
+            } else {
+                $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat menghapus data';
+                return back()->withErrors(['api' => $errorMessage]);
+            }
+
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $responseBody = $e->getResponse()->getBody()->getContents();
+                $responseData = json_decode($responseBody, true);
+
+                $errorMessage = $responseData['message'] ?? 'Terjadi kesalahan saat menghubungi server';
+                return back()->withErrors(['api' => $errorMessage]);
+            }
+
+            return back()->withErrors(['api' => 'Terjadi kesalahan saat menghubungi server. Silakan coba lagi.']);
+        } catch (\Exception $e) {
+            return back()->withErrors(['api' => 'Terjadi kesalahan yang tidak terduga. Silakan coba lagi.']);
+        }
+    }
+
     private function generateRandomRMNumber(): string
     {
         return str_pad(mt_rand(100000, 999999), 6, '0', STR_PAD_LEFT);
