@@ -1,6 +1,6 @@
 # Patient Management System - PKU Muhammadiyah Wonosobo
 
-Sistem manajemen pasien yang dibangun menggunakan Laravel 12 dengan Inertia.js dan Vue 3. Aplikasi ini menyediakan interface untuk mengelola data pasien, transaksi finansial, dan sistem profil pengguna.
+Sistem manajemen pasien yang dibangun menggunakan Laravel 12 dengan Inertia.js dan Vue 3. Aplikasi ini menyediakan interface untuk mengelola data pasien dan sistem profil pengguna.
 
 ## 🛠️ Teknologi yang Digunakan
 
