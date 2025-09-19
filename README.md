@@ -16,10 +16,38 @@ Sistem manajemen pasien yang dibangun menggunakan Laravel 12 dengan Inertia.js d
 
 - ✅ Manajemen Data Pasien (CRUD)
 - ✅ Sistem Autentikasi dengan Role-based Access
+- ✅ **Validasi Password Real-time dengan Indikator Visual**
 - ✅ Profile Management dengan Upload Photo
 - ✅ Filter dan Pencarian Advanced
 - ✅ Responsive Design (Mobile & Desktop)
 - ✅ Real-time Alerts dan Notifications
+
+## 🔐 Sistem Validasi Password
+
+Aplikasi ini memiliki sistem validasi password yang ketat dengan indikator visual real-time:
+
+### Syarat Password:
+1. **Mengandung angka** (0-9)
+2. **Mengandung huruf kapital** (A-Z) 
+3. **Mengandung huruf non kapital** (a-z)
+4. **Minimal password 7 huruf**
+
+### Fitur Validasi:
+- ✅ **Real-time validation** - Validasi langsung saat user mengetik
+- ✅ **Visual indicators** - Icon check (✓) hijau jika memenuhi, silang (✗) merah jika belum
+- ✅ **Dynamic border colors** - Border input berubah warna sesuai status validasi
+- ✅ **Button disabled** - Tombol register tidak dapat diklik jika password belum memenuhi syarat
+- ✅ **Password confirmation** - Validasi konfirmasi password dengan indikator visual
+
+### Contoh Password Valid:
+- `Password1` ✅
+- `MyPass123` ✅
+- `SecureP4ss` ✅
+
+### Contoh Password Tidak Valid:
+- `password` ❌ (tidak ada angka dan huruf kapital)
+- `PASSWORD123` ❌ (tidak ada huruf kecil)
+- `Pass1` ❌ (kurang dari 7 karakter)
 
 ## 🚀 Langkah-langkah Instalasi
 

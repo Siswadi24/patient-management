@@ -4,14 +4,27 @@ import TextLink from '@/components/TextLink.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Head, useForm } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
+import { LoaderCircle, Check, X } from 'lucide-vue-next';
 import Button from 'primevue/button';
+import { computed, watch } from 'vue';
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+});
+
+// Password validation states
+const passwordValidation = computed(() => {
+    const password = form.password;
+    return {
+        hasNumber: /\d/.test(password),
+        hasUppercase: /[A-Z]/.test(password),
+        hasLowercase: /[a-z]/.test(password),
+        minLength: password.length >= 7,
+        isValid: /\d/.test(password) && /[A-Z]/.test(password) && /[a-z]/.test(password) && password.length >= 7
+    };
 });
 
 const submit = () => {
@@ -87,8 +100,48 @@ const submit = () => {
                             autocomplete="new-password"
                             v-model="form.password"
                             placeholder="Create a strong password"
-                            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                            :class="[
+                                'w-full rounded-lg border bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400',
+                                form.password && !passwordValidation.isValid 
+                                    ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
+                                    : form.password && passwordValidation.isValid 
+                                        ? 'border-green-300 focus:border-green-500 focus:ring-green-500'
+                                        : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                            ]"
                         />
+                        
+                        <!-- Password Requirements -->
+                        <div v-if="form.password" class="mt-2 space-y-1">
+                            <div class="flex items-center space-x-2 text-xs">
+                                <Check v-if="passwordValidation.hasNumber" class="h-3 w-3 text-green-500" />
+                                <X v-else class="h-3 w-3 text-red-500" />
+                                <span :class="passwordValidation.hasNumber ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Mengandung angka
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <Check v-if="passwordValidation.hasUppercase" class="h-3 w-3 text-green-500" />
+                                <X v-else class="h-3 w-3 text-red-500" />
+                                <span :class="passwordValidation.hasUppercase ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Mengandung huruf kapital
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <Check v-if="passwordValidation.hasLowercase" class="h-3 w-3 text-green-500" />
+                                <X v-else class="h-3 w-3 text-red-500" />
+                                <span :class="passwordValidation.hasLowercase ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Mengandung huruf non kapital
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <Check v-if="passwordValidation.minLength" class="h-3 w-3 text-green-500" />
+                                <X v-else class="h-3 w-3 text-red-500" />
+                                <span :class="passwordValidation.minLength ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Minimal password 7 huruf
+                                </span>
+                            </div>
+                        </div>
+                        
                         <InputError :message="form.errors.password" class="mt-1" />
                     </div>
 
@@ -104,16 +157,35 @@ const submit = () => {
                             autocomplete="new-password"
                             v-model="form.password_confirmation"
                             placeholder="Confirm your password"
-                            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                            :class="[
+                                'w-full rounded-lg border bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:ring-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400',
+                                form.password_confirmation && form.password_confirmation !== form.password
+                                    ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                                    : form.password_confirmation && form.password_confirmation === form.password
+                                        ? 'border-green-300 focus:border-green-500 focus:ring-green-500'
+                                        : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                            ]"
                         />
+                        
+                        <!-- Password Confirmation Validation -->
+                        <div v-if="form.password_confirmation" class="mt-2">
+                            <div class="flex items-center space-x-2 text-xs">
+                                <Check v-if="form.password_confirmation === form.password" class="h-3 w-3 text-green-500" />
+                                <X v-else class="h-3 w-3 text-red-500" />
+                                <span :class="form.password_confirmation === form.password ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                    Password sesuai
+                                </span>
+                            </div>
+                        </div>
+                        
                         <InputError :message="form.errors.password_confirmation" class="mt-1" />
                     </div>
 
                     <!-- Register Button -->
                     <Button
                         type="submit"
-                        class="w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        :disabled="form.processing"
+                        class="w-full rounded-lg bg-blue-600 px-4 py-3 font-medium text-white transition-colors duration-200 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        :disabled="form.processing || (form.password && !passwordValidation.isValid) || (form.password_confirmation && form.password_confirmation !== form.password)"
                     >
                         <LoaderCircle v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
                         Create Account
