@@ -16,7 +16,7 @@ Sistem manajemen pasien yang dibangun menggunakan Laravel 12 dengan Inertia.js d
 
 - ✅ Manajemen Data Pasien (CRUD)
 - ✅ Sistem Autentikasi dengan Role-based Access
-- ✅ **Validasi Password Real-time dengan Indikator Visual**
+- ✅ Validasi Password Real-time dengan Indikator Visual
 - ✅ Profile Management dengan Upload Photo
 - ✅ Filter dan Pencarian Advanced
 - ✅ Responsive Design (Mobile & Desktop)
@@ -73,8 +73,6 @@ composer install
 ### 3. Install Dependencies Frontend
 ```bash
 npm install
-# atau
-yarn install
 ```
 
 ### 4. Environment Setup

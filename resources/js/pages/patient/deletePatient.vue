@@ -1,22 +1,3 @@
-<template>
-    <div>
-        <AlertRS v-if="showAlert" :title="alertTitle" :message="alertMessage" @close="closeAlert" />
-        <ConfirmDialog :dismissableMask="false" :closable="false" />
-
-        <Button
-            @click="confirmDelete()"
-            severity="danger"
-            class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700"
-            size="small"
-            :loading="isDeleting"
-            :disabled="isDeleting"
-        >
-            <Trash class="mr-2 h-4 w-4" />
-            Hapus
-        </Button>
-    </div>
-</template>
-
 <script setup lang="ts">
 import AlertRS from '@/components/ui/AlertRS/AlertRS.vue';
 import { router, usePage } from '@inertiajs/vue3';
@@ -150,3 +131,16 @@ function closeAlert() {
     showAlert.value = false;
 }
 </script>
+<template>
+    <div>
+        <AlertRS v-if="showAlert" :title="alertTitle" :message="alertMessage" @close="closeAlert" />
+        <ConfirmDialog :dismissableMask="false" :closable="false" />
+
+        <Button @click="confirmDelete()" severity="danger"
+            class="justify-start border-red-600 bg-red-600 py-2 text-sm text-white hover:bg-red-700" size="small"
+            :loading="isDeleting" :disabled="isDeleting">
+            <Trash class="mr-2 h-4 w-4" />
+            Hapus
+        </Button>
+    </div>
+</template>

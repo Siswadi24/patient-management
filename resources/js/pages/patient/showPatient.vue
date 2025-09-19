@@ -42,35 +42,24 @@ const translateGender = (gender: string) => {
 </script>
 
 <template>
-    <Dialog
-        v-model:visible="dialogVisible"
-        modal
-        header="Detail Pasien"
-        :style="{ width: '60rem' }"
-        class="dark"
-    >
+    <Dialog v-model:visible="dialogVisible" modal header="Detail Pasien" :style="{ width: '60rem' }" class="dark">
         <div v-if="patient" class="space-y-6">
-            <!-- Patient Header -->
             <div class="flex items-center space-x-4 border-b border-gray-600 pb-4">
-                <img
-                    :src="patient.avatar"
-                    :alt="`${patient.first_name} ${patient.last_name}`"
-                    class="h-20 w-20 rounded-full object-cover border-2 border-gray-500"
-                />
+                <img :src="patient.avatar" :alt="`${patient.first_name} ${patient.last_name}`"
+                    class="h-20 w-20 rounded-full object-cover border-2 border-gray-500" />
                 <div>
                     <h2 class="text-2xl font-bold ">
                         {{ patient.first_name }} {{ patient.last_name }}
                     </h2>
                     <p class="text-gray-500">No. RM: {{ patient.rm_number }}</p>
-                    <span :class="`inline-block px-3 py-1 text-sm rounded-full text-white ${getGenderBadge(patient.gender)}`">
+                    <span
+                        :class="`inline-block px-3 py-1 text-sm rounded-full text-white ${getGenderBadge(patient.gender)}`">
                         {{ translateGender(patient.gender) }}
                     </span>
                 </div>
             </div>
 
-            <!-- Patient Information Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Informasi Pribadi -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Informasi Pribadi</h3>
 
@@ -101,7 +90,6 @@ const translateGender = (gender: string) => {
                     </div>
                 </div>
 
-                <!-- Informasi Kontak & Alamat -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Kontak & Alamat</h3>
 
@@ -123,7 +111,6 @@ const translateGender = (gender: string) => {
                     </div>
                 </div>
 
-                <!-- Informasi Keluarga -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Informasi Keluarga</h3>
 
@@ -143,7 +130,6 @@ const translateGender = (gender: string) => {
                     </div>
                 </div>
 
-                <!-- Informasi Lainnya -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold  border-b border-gray-600 pb-2">Informasi Lainnya</h3>
 
