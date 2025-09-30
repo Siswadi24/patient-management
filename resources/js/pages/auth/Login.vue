@@ -26,8 +26,8 @@ const passwordValidation = computed(() => {
         hasNumber: /\d/.test(password),
         hasUppercase: /[A-Z]/.test(password),
         hasLowercase: /[a-z]/.test(password),
-        minLength: password.length >= 7,
-        isValid: /\d/.test(password) && /[A-Z]/.test(password) && /[a-z]/.test(password) && password.length >= 7
+        minLength: password.length >= 8,
+        isValid: /\d/.test(password) && /[A-Z]/.test(password) && /[a-z]/.test(password) && password.length >= 8
     };
 });
 
@@ -124,7 +124,7 @@ const submit = () => {
                                 <X v-else class="h-3 w-3 text-red-500" />
                                 <span
                                     :class="passwordValidation.minLength ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-                                    Minimal password 7 huruf
+                                    Minimal password 8 huruf
                                 </span>
                             </div>
                         </div>
